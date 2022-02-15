@@ -914,7 +914,7 @@ camGame.setFilters(shaderArray);
 		splash.alpha = 0.0;
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
-		playerStrums = new FlxTypedGroup<StrumNote>();
+		playerStrums = new FlxTypedGroup<StrumNote>(); 
 
 		// startCountdown();
 
@@ -3944,6 +3944,11 @@ for (key => value in luaShaders)
 
 			if (!note.isSustainNote)
 			{
+				if (ClientPrefs.hitSounds)
+				{
+					FlxG.sound.play(Paths.sound('note_click'));
+				}
+
 				combo += 1;
 				popUpScore(note);
 				if(combo > 9999) combo = 9999;
