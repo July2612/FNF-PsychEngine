@@ -417,10 +417,6 @@ class PlayState extends MusicBeatState
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 				stageFront.updateHitbox();
 				add(stageFront);
-new DynamicShaderHandler('Example', false);
-var shaderArray = new Array<BitmapFilter>();
-shaderArray.push(new ShaderFilter(animatedShaders['Example'].shader));
-camGame.setFilters(shaderArray);
 				if(!ClientPrefs.lowQuality) {
 					var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
 					stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
@@ -1356,12 +1352,15 @@ camGame.setFilters(shaderArray);
 					}
 					camOther.setFilters(newCamEffects);
 			default: 
-				camGameShaders.remove(effect);
-				var newCamEffects:Array<BitmapFilter>=[];
-				for(i in camGameShaders){
-				  newCamEffects.push(new ShaderFilter(i.shader));
+				if(modchartSprites.exists(cam)) {
+					Reflect.setProperty(modchartSprites.get(cam),"shader",null);
+				} else if(modchartTexts.exists(cam)) {
+					Reflect.setProperty(modchartTexts.get(cam),"shader",null);
+				} else {
+					var OBJ = Reflect.getProperty(PlayState.instance,cam);
+					Reflect.setProperty(OBJ,"shader", null);
 				}
-				camGame.setFilters(newCamEffects);
+				
 		}
 		
 	  
@@ -1381,6 +1380,10 @@ camGame.setFilters(shaderArray);
 				camOtherShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
 				camOther.setFilters(newCamEffects);
+			case 'camgame' | 'game': 
+				camGameShaders = [];
+				var newCamEffects:Array<BitmapFilter>=[];
+				camGame.setFilters(newCamEffects);
 			default: 
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
